@@ -1,11 +1,21 @@
+import { css } from "@emotion/core";
+
 import Layout from "../components/layouts/Layout";
+import { Campo, Formulario, InputSubmit } from "../components/ui/Formulario";
 
 export default function CrearCuenta() {
   return (
     <Layout>
-      <h1>Crear Cuenta</h1>
-      <form>
-        <div>
+      <h1
+        css={css`
+          text-align: center;
+          margin-top: 5rem;
+        `}
+      >
+        Crear Cuenta
+      </h1>
+      <Formulario>
+        <Campo>
           <label htmlFor="nombre">Nombre</label>
           <input
             type="text"
@@ -13,12 +23,12 @@ export default function CrearCuenta() {
             placeholder="Tu nombre"
             name="nombre"
           />
-        </div>
-        <div>
+        </Campo>
+        <Campo>
           <label htmlFor="email">Email</label>
           <input type="email" id="email" placeholder="Tu email" name="email" />
-        </div>
-        <div>
+        </Campo>
+        <Campo>
           <label htmlFor="password">Password</label>
           <input
             type="password"
@@ -26,9 +36,9 @@ export default function CrearCuenta() {
             placeholder="Tu password"
             name="password"
           />
-        </div>
-        <input type="submit" value="Crear cuenta" />
-      </form>
+        </Campo>
+        <InputSubmit type="submit" value="Crear cuenta" />
+      </Formulario>
     </Layout>
   );
 }
