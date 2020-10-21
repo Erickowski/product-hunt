@@ -7,7 +7,3 @@ export default function Home() {
     </Layout>
   );
 }
-
-// // validar URL
-
-// !/^(ftp|http|https):\/\/[^ "]+$/
