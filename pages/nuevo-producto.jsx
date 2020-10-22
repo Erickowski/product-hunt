@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
 import { css } from "@emotion/core";
 import Router, { useRouter } from "next/router";
+import FileUploader from "react-firebase-file-uploader";
 
 import Layout from "../components/layouts/Layout";
 import {
@@ -24,6 +25,12 @@ const STATE_INICIAL = {
 };
 
 export default function NuevoProducto() {
+  // State de las imagenes
+  const [nombreImagen, setNombreImagen] = useState("");
+  const [subiendo, setSubiendo] = useState(false);
+  const [progreso, setProgreso] = useState(0);
+  const [urlImagen, setUrlImagen] = useState("");
+
   const [error, setError] = useState(false);
 
   const {
@@ -53,6 +60,7 @@ export default function NuevoProducto() {
       nombre,
       empresa,
       url,
+      urlImagen,
       descripcion,
       votos: 0,
       comentarios: [],
@@ -61,7 +69,35 @@ export default function NuevoProducto() {
 
     // Insertarlo en la base de datos
     firebase.db.collection("productos").add(producto);
+
+    return router.push("/");
   }
+
+  const handleUploadStart = () => {
+    setProgreso(0);
+    setSubiendo(true);
+  };
+
+  const handleProgress = (progreso) => setProgreso({ progreso });
+
+  const handleUploadError = (error) => {
+    setSubiendo(error);
+    console.error(error);
+  };
+
+  const handleUploadSuccess = (nombre) => {
+    setProgreso(100);
+    setSubiendo(false);
+    setNombreImagen(nombre);
+    firebase.storage
+      .ref("productos")
+      .child(nombre)
+      .getDownloadURL()
+      .then((url) => {
+        console.log(url);
+        setUrlImagen(url);
+      });
+  };
 
   return (
     <Layout>
@@ -105,18 +141,20 @@ export default function NuevoProducto() {
           </Campo>
           {errores.empresa && <Error>{errores.empresa}</Error>}
 
-          {/* <Campo>
+          <Campo>
             <label htmlFor="imagen">Imagen</label>
-            <input
-              type="file"
+            <FileUploader
+              accept="image/*"
               id="imagen"
               name="imagen"
-              value={imagen}
-              onChange={handleChange}
-              onBlur={handleBlur}
+              randomizeFilename
+              storageRef={firebase.storage.ref("productos")}
+              onUploadStart={handleUploadStart}
+              onUploadError={handleUploadError}
+              onUploadSuccess={handleUploadSuccess}
+              onProgress={handleProgress}
             />
           </Campo>
-          {errores.imagen && <Error>{errores.imagen}</Error>} */}
 
           <Campo>
             <label htmlFor="url">URL</label>
