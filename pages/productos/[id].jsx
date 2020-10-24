@@ -12,6 +12,7 @@ import Layout from "../../components/layouts/Layout";
 import Boton from "../../components/ui/Boton";
 
 import { Campo, InputSubmit } from "../../components/ui/Formulario";
+import { route } from "next/dist/next-server/server/router";
 
 const ContenedorProducto = styled.div`
   @media (min-width: 768px) {
@@ -47,7 +48,7 @@ const Producto = () => {
       };
       obtenerProducto();
     }
-  }, [id]);
+  }, [id, producto]);
 
   if (Object.keys(producto).length === 0) return "Cargando...";
 
@@ -61,7 +62,31 @@ const Producto = () => {
     urlImagen,
     votos,
     creador,
+    haVotado,
   } = producto;
+
+  // Administrar y validar los votos
+  const votarProducto = () => {
+    if (!usuario) {
+      return router.push("/login");
+    }
+    // Obtener y sumar un nuevo voto
+    const nuevoTotal = votos + 1;
+    // Verificar si el usuario actual ha votado
+    if (haVotado.includes(usuario.uid)) return;
+    // guardar el ID del usuario que ha votado
+    const hanVotado = [...haVotado, usuario.uid];
+    // Actualizar en la BD
+    firebase.db
+      .collection("productos")
+      .doc(id)
+      .update({ votos: nuevoTotal, haVotado: hanVotado });
+    // Actualizar el state
+    guardarProducto({
+      ...producto,
+      votos: nuevoTotal,
+    });
+  };
 
   return (
     <Layout>
@@ -127,7 +152,7 @@ const Producto = () => {
               >
                 {votos} Votos
               </p>
-              {usuario && <Boton>Votar</Boton>}
+              {usuario && <Boton onClick={votarProducto}>Votar</Boton>}
             </div>
           </aside>
         </ContenedorProducto>
