@@ -1,6 +1,6 @@
-# 💻 MERNTasks (frontend)
+# 💻 Product Hunt
 
-MERNTasks es un proyecto para administrar tus proyectos y sus tareas, puedes darte de alta, crear nuevos proyectos y crear sus tareas, puedes editar y eliminar tareas además de cambiar su estado de incompleto a completo y viceversa.
+Este proyecto es un clon de Product Hunt con menos features, permite registrarse y una vez registrado crear productos. Los productos pueden ser comentados (los comentarios del creador tienen un badge distintivo), votados o eliminados (solo por el mismo creador). Se incluye un buscador de productos por nombre.
 
 ![Home Product Hunt](.readme-static/Home.png)
 
