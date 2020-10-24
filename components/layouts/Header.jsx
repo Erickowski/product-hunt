@@ -59,13 +59,13 @@ const Header = () => {
         >
           {usuario ? (
             <>
-              <p
+              <h2
                 css={css`
                   margin-right: 2rem;
                 `}
               >
                 Hola {usuario.displayName}
-              </p>
+              </h2>
               <Boton bgColor="true" onClick={() => firebase.cerrarSesion()}>
                 Cerrar Sesión
               </Boton>

@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import { es } from "date-fns/locale";
 import Link from "next/link";
+import { css } from "@emotion/core";
 
 const Producto = styled.li`
   padding: 4rem;
@@ -35,6 +36,7 @@ const TextoDescripcion = styled.p`
 `;
 
 const Comentarios = styled.div`
+  width: 200px;
   margin-top: 2rem;
   display: flex;
   align-items: center;
@@ -94,7 +96,11 @@ const DetallesProducto = ({ producto }) => {
   return (
     <Producto>
       <DescripcionProducto>
-        <div>
+        <div
+          css={css`
+            width: 200px;
+          `}
+        >
           <Imagen src={urlImagen} />
         </div>
         <div>

@@ -32,7 +32,7 @@ const Producto = () => {
     query: { id },
   } = router;
 
-  const { firebase } = useContext(FirebaseContext);
+  const { firebase, usuario } = useContext(FirebaseContext);
 
   useEffect(() => {
     if (id) {
@@ -60,6 +60,7 @@ const Producto = () => {
     url,
     urlImagen,
     votos,
+    creador,
   } = producto;
 
   return (
@@ -80,15 +81,22 @@ const Producto = () => {
               Publicado hace:{" "}
               {formatDistanceToNow(new Date(creado), { locale: es })}
             </p>
+            <p>
+              Publicado por: {creador.nombre} de {empresa}
+            </p>
             <img src={urlImagen} alt="" />
             <p>{descripcion}</p>
-            <h2>Agrega tu comentario</h2>
-            <form>
-              <Campo>
-                <input type="text" name="mensaje" />
-              </Campo>
-              <InputSubmit type="submit" value="Agregar comentario" />
-            </form>
+            {usuario && (
+              <>
+                <h2>Agrega tu comentario</h2>
+                <form>
+                  <Campo>
+                    <input type="text" name="mensaje" />
+                  </Campo>
+                  <InputSubmit type="submit" value="Agregar comentario" />
+                </form>
+              </>
+            )}
             <h2
               css={css`
                 margin: 2rem 0;
@@ -119,7 +127,7 @@ const Producto = () => {
               >
                 {votos} Votos
               </p>
-              <Boton>Votar</Boton>
+              {usuario && <Boton>Votar</Boton>}
             </div>
           </aside>
         </ContenedorProducto>
